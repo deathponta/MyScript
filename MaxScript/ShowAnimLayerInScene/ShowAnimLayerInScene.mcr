@@ -1,6 +1,6 @@
 /*
 	Created on 2016.8.25
-	Author k_sakaguchi
+	Author deathponta
 	3dsMax内で使用しているアニメーションレイヤ（Bipedレイヤー除く）をリストし、
 	そのレイヤーに属するオブジェクトをリストする.ダブルクリックでオブジェクトを選択できる
 */
