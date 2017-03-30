@@ -67,7 +67,12 @@ function ReplaceParam( _idx ){
 	fs = null;
 }
 
-// ファイル数分処理
+
+
+//------------------------------------------------------------
+// メイン処理
+
+// D&Dしたファイル数分処理
 for( var i=0; i<args.length; i++ ){
 	ReplaceParam(i);
 }
