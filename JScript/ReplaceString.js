@@ -1,10 +1,17 @@
 /*
-D&Dしたファイル内の特定の文字列を、指定した文字列に置き換える
+パラメータ一括変更シート
+
+使用例 こんな感じで書き換えます
+  m_hp: 25
+  ↓
+  m_hp: 1000
 */
-var args = WScript.Arguments;
 
 var SERCH_WORD = "m_hp";
 var SET_WORD = "1000";
+
+
+var args = WScript.Arguments;
 
 //-----------------------------------------------------
 //  オープンモード
@@ -18,20 +25,19 @@ var TRISTATE_FALSE      =  0;   // ASCII
 var TRISTATE_USEDEFAULT = -2;   // システムデフォルト
 //-----------------------------------------------------
 
-// ファイル数分処理
-for( var i=0; i<args.length; i++ ){
-	
+
+function ReplaceParam( _idx ){
 
 	//  ファイル関連の操作を提供するオブジェクトを取得
 	var fs = new ActiveXObject( "Scripting.FileSystemObject" );
 
 	//  ファイルを読み取り専用で開き中の文字列のみを取得
-	var readFile = fs.OpenTextFile( args(i), FORREADING, true , TRISTATE_USEDEFAULT );
+	var readFile = fs.OpenTextFile( args(_idx), FORREADING, true , TRISTATE_USEDEFAULT );
 	var baseStr = readFile.ReadAll();
 
 
 	// 今度は書き込み専用で開きいじくる
-	var writeFile = fs.OpenTextFile( args(i), FORWRITING, true , TRISTATE_USEDEFAULT );
+	var writeFile = fs.OpenTextFile( args(_idx), FORWRITING, true , TRISTATE_USEDEFAULT );
 
 
 	// 文字列操作
@@ -43,17 +49,10 @@ for( var i=0; i<args.length; i++ ){
 
 		// 検索文字列が見つかった場合に処理
 	    if( line.indexOf( SERCH_WORD ) > 0 ){
-	    	/*
-	    	// けつから半角スペースがある箇所まで
-	    	start = line.lastIndexOf( /\s/ );
-	    	end = line.length;
-	    	WScript.Echo( "HP : " + lines[i].substr( start , end ) );
-	    	*/
+	    	// 正規表現で置き換え. スペースの間に整数が1桁以上ありかつ末尾のものを置き換え対処
+	    	lines[i] = line.replace( /\s\d{1,}$/, " " + SET_WORD );
 	    	
-	    	// 正規表現で置き換え
-	    	lines[i] = line.replace( /\s*$/, SET_WORD );
-	    	
-	    	WScript.Echo(lines[i]);
+	    	//WScript.Echo(lines[i]);
 	    }
 	}
 
@@ -66,5 +65,10 @@ for( var i=0; i<args.length; i++ ){
 
 	//  オブジェクトを解放
 	fs = null;
+}
+
+// ファイル数分処理
+for( var i=0; i<args.length; i++ ){
+	ReplaceParam(i);
 }
 
