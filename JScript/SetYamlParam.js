@@ -5,14 +5,11 @@
   m_hp: 25
   ↓
   m_hp: 1000
-
-【既出バグ】
-連続してD&Dした場合に正常に動作しません。しかも改行が増えます。
 */
 
 // 下の値を書き換えます
 var SERCH_WORD = "m_hp";
-var SET_WORD = "1000";
+var SET_WORD = "100";
 
 
 var args = WScript.Arguments;
@@ -60,9 +57,10 @@ function ReplaceParam( _idx ){
 	    }
 	}
 
-	baseStr = lines.join('\n');
-
-	writeFile.WriteLine( baseStr );
+	// 書き込み(1行ずつちゃんと書き込む \n でやると改行がおかしくなる)
+	for( var j=0; j<lines.length;j++ ){
+		writeFile.WriteLine( lines[j] );
+	}
 
 	//  ファイルを閉じる
 	writeFile.Close();
