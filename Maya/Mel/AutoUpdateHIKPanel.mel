@@ -1,0 +1,41 @@
+{
+/*
+HumanIKコントローラーを選択した時に、HumanIKパネルのキャラクターを選択キャラクターにする
+ウィンドウを閉じるとScriptjobも閉じます。
+ただし現状選択に反応するノードは hikIEEffector のみです
+*/
+
+global proc updateHIKPanel(){
+	// リターン処理
+	if( size(`ls -sl`) == 0 )return;
+	$type = nodeType(`ls -sl -hd 1`);
+	if( $type != "hikIKEffector" )return;
+	//if(  $type != "hikIKEffector" && $type != "hikFKJoint" )return;
+
+	// ここまで通ったら 
+	$HIKS2E = listConnections( "-s" , true , "-type" , "HIKState2Effector" , `ls -sl` );
+	$HIKEFC = listConnections( "-s" , true ,"-type" , "HIKEffectorFromCharacter" , $HIKS2E[0] );
+	$CharaName = listConnections( "-s" , true ,"-type" , "HIKCharacterNode" , $HIKEFC[0] );
+	print $CharaName;
+
+
+	// HIK UI切り替え処理
+	optionMenuGrp -e -v $CharaName hikCharacterList;
+	hikUpdateCurrentCharacterFromUI(); 
+	hikUpdateContextualUI();
+	
+	//print "hikUIを更新しました。";
+
+}
+
+string $windowName = `window`;
+ columnLayout;
+ text "Auto update HIK panel !";
+ text "Close this window will delete Scriptjob.";
+ showWindow $windowName;
+
+scriptJob
+-parent $windowName
+-e "SelectionChanged" "updateHIKPanel";
+
+}
