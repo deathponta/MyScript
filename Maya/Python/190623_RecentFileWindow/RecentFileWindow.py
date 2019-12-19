@@ -60,7 +60,7 @@ class RecentFileWindow(object):
 			cmds.rowLayout( nc=2 , adj=1 )
 
 			cmds.button(l=filename,c=partial(self.customOpenFile, f) , ann=dirname )
-			cmds.button( l=u'ﾌｫﾙﾀﾞ', c=partial(self.openExplorer , f) , ann=u'親フォルダをエクスプローラーで開く' , bgc=[0.9,0.9,0])
+			cmds.button( l=u'F', c=partial(self.openExplorer , f) , ann=u'親フォルダをエクスプローラーで開く' , bgc=[0.8,0.8,0])
 
 			cmds.setParent( '..' )
 
